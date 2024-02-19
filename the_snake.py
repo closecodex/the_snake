@@ -50,7 +50,7 @@ class GameObject:
         self.position = position
         self.body_color = body_color
     position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
-    body_color = None 
+    body_color = None
 
     def draw():
         """Абстрактный метод-заглушка"""
@@ -79,13 +79,13 @@ class Apple(GameObject):
         """Метод, устанавливающий случайное положение яблока"""
         self.position = (
             randint(0, GRID_WIDTH - 1) * GRID_SIZE,
-            randint(0, GRID_HEIGHT - 1) * GRID_SIZE 
+            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
         )
 
 
 class Snake(GameObject):
     """Класс, описывающий змейку и её поведение"""
- 
+
     def __init__(self, position):
         """Метод, инициализирующий начальное состояние змейки"""
         super().__init__(position, SNAKE_COLOR)
@@ -104,7 +104,7 @@ class Snake(GameObject):
     def move(self):
         """Метод обновления положения змейки"""
         head = self.get_head_position()
-        new_head = (head[0] + self.direction[0] * GRID_SIZE, 
+        new_head = (head[0] + self.direction[0] * GRID_SIZE,
                     head[1] + self.direction[1] * GRID_SIZE)
         if new_head[0] < 0:
             new_head = (SCREEN_WIDTH - GRID_SIZE, new_head[1])
@@ -140,11 +140,9 @@ class Snake(GameObject):
             )
             pygame.draw.rect(surface, BOARD_BACKGROUND_COLOR, last_rect)
 
-
     def get_head_position(self):
         """Метод, возвращающий позицию головы змейки"""
         return self.positions[0]
-
 
     def reset(self):
         """Метод сброса змейки"""
@@ -174,8 +172,7 @@ def handle_keys(game_object):
 
 def main():
     """Основная логика программы"""
-
-    apple = Apple((randint(0, GRID_WIDTH - 1) * GRID_SIZE, 
+    apple = Apple((randint(0, GRID_WIDTH - 1) * GRID_SIZE,
                    randint(0, GRID_HEIGHT - 1) * GRID_SIZE))
     snake = Snake(((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)))
 
@@ -193,11 +190,10 @@ def main():
 
         if snake.get_head_position() in snake.positions[1:]:
             snake.reset()
-            apple.randomize_position()    
-
+            apple.randomize_position()
         apple.draw(screen)
         snake.draw(screen)
-        pygame.display.update()       
+        pygame.display.update()
 
 
 if __name__ == '__main__':
