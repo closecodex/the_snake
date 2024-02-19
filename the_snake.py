@@ -60,10 +60,8 @@ class GameObject:
 class Apple(GameObject):
     """Класс, описывающий яблоко и действия с ним"""
 
-    def __init__(self, position = (
-            randint(0, GRID_WIDTH - 1) * GRID_SIZE,
-            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-        )):
+    def __init__(self, position = (randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+            randint(0, GRID_HEIGHT - 1) * GRID_SIZE)):
         """Метод, инициализирующий начальное состояние яблока"""
         super().__init__(position, APPLE_COLOR)
         self.position = position
