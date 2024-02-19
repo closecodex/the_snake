@@ -41,6 +41,7 @@ pygame.display.set_caption('Змейка')
 # Настройка времени:
 clock = pygame.time.Clock()
 
+
 # Тут опишите все классы игры.
 class GameObject:
     """Базовый класс, от которого наследуются другие игровые объекты"""
@@ -54,6 +55,7 @@ class GameObject:
     def draw():
         """Абстрактный метод-заглушка"""
         pass
+
 
 class Apple(GameObject):
     """Класс, описывающий яблоко и действия с ним"""
@@ -79,6 +81,7 @@ class Apple(GameObject):
             randint(0, GRID_WIDTH - 1) * GRID_SIZE,
             randint(0, GRID_HEIGHT - 1) * GRID_SIZE 
         )
+
 
 class Snake(GameObject):
     """Класс, описывающий змейку и её поведение"""
@@ -137,9 +140,11 @@ class Snake(GameObject):
             )
             pygame.draw.rect(surface, BOARD_BACKGROUND_COLOR, last_rect)
 
+
     def get_head_position(self):
         """Метод, возвращающий позицию головы змейки"""
         return self.positions[0]
+
 
     def reset(self):
         """Метод сброса змейки"""
@@ -147,6 +152,7 @@ class Snake(GameObject):
         self.positions = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
         self.direction = choice([UP, DOWN, LEFT, RIGHT])
         screen.fill(BOARD_BACKGROUND_COLOR)
+
 
 def handle_keys(game_object):
     """Метод обрабатки нажатия клавиш"""
@@ -165,21 +171,22 @@ def handle_keys(game_object):
                 game_object.next_direction = RIGHT
     pygame.display.update()
 
+
 def main():
     """Основная логика программы"""
 
     apple = Apple((randint(0, GRID_WIDTH - 1) * GRID_SIZE, 
                    randint(0, GRID_HEIGHT - 1) * GRID_SIZE))
     snake = Snake(((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)))
-  
+
     while True:
         clock.tick(SPEED)
         handle_keys(snake)
-       
+
         if snake.get_head_position() == apple.position:
             apple.randomize_position()
             snake.length += 2
-          
+
         screen.fill(BOARD_BACKGROUND_COLOR)
         snake.move()
         snake.update_direction()
@@ -191,6 +198,7 @@ def main():
         apple.draw(screen)
         snake.draw(screen)
         pygame.display.update()       
+
 
 if __name__ == '__main__':
     main()
