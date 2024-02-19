@@ -60,7 +60,10 @@ class GameObject:
 class Apple(GameObject):
     """Класс, описывающий яблоко и действия с ним"""
 
-    def __init__(self, position):
+    def __init__(self, position = (
+            randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+        )):
         """Метод, инициализирующий начальное состояние яблока"""
         super().__init__(position, APPLE_COLOR)
         self.position = position
@@ -86,7 +89,7 @@ class Apple(GameObject):
 class Snake(GameObject):
     """Класс, описывающий змейку и её поведение"""
 
-    def __init__(self, position):
+    def __init__(self, position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))):
         """Метод, инициализирующий начальное состояние змейки"""
         super().__init__(position, SNAKE_COLOR)
         self.positions = [position]
