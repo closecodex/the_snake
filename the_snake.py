@@ -47,35 +47,32 @@ class GameObject:
     """Базовый класс, от которого наследуются другие игровые объекты"""
 
     def __init__(self, position=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)),
-                 body_color=None):
+                 body_color=(255, 255, 255)):
         self.position = position
         self.body_color = body_color
-    position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
-    body_color = None
 
-    def draw():
+    def draw(self, position, surface):
         """Абстрактный метод-заглушка"""
-        pass
+        rect = pygame.Rect(
+            (position[0], position[1]),
+            (GRID_SIZE, GRID_SIZE)
+        )
+        pygame.draw.rect(surface, self.body_color, rect)
+        pygame.draw.rect(surface, BORDER_COLOR, rect, 1)
 
 
 class Apple(GameObject):
     """Класс, описывающий яблоко и действия с ним"""
 
     def __init__(self, position=(randint(0, GRID_WIDTH - 1) * GRID_SIZE,
-                                 randint(0, GRID_HEIGHT - 1) * GRID_SIZE)):
+                                 randint(0, GRID_HEIGHT - 1) * GRID_SIZE),
+                                 body_color=APPLE_COLOR):
         """Метод, инициализирующий начальное состояние яблока"""
-        super().__init__(position, APPLE_COLOR)
-        self.position = position
-        self.randomize_position = self.randomize_position
+        super().__init__(position, body_color)
 
     def draw(self, surface):
         """Метод, отрисовывающий яблоко на игровой поверхности"""
-        rect = pygame.Rect(
-            (self.position[0], self.position[1]),
-            (GRID_SIZE, GRID_SIZE)
-        )
-        pygame.draw.rect(surface, self.body_color, rect)
-        pygame.draw.rect(surface, BORDER_COLOR, rect, 1)
+        super().draw(self.position, surface)
 
     def randomize_position(self):
         """Метод, устанавливающий случайное положение яблока"""
@@ -88,9 +85,10 @@ class Apple(GameObject):
 class Snake(GameObject):
     """Класс, описывающий змейку и её поведение"""
 
-    def __init__(self, position=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))):
+    def __init__(self, position=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)),
+                body_color=SNAKE_COLOR):
         """Метод, инициализирующий начальное состояние змейки"""
-        super().__init__(position, SNAKE_COLOR)
+        super().__init__(position, body_color)
         self.positions = [position]
         self.direction = choice([UP, DOWN, LEFT, RIGHT])
         self.length = 1
@@ -106,34 +104,20 @@ class Snake(GameObject):
     def move(self):
         """Метод обновления положения змейки"""
         head = self.get_head_position()
-        new_head = (head[0] + self.direction[0] * GRID_SIZE,
-                    head[1] + self.direction[1] * GRID_SIZE)
-        if new_head[0] < 0:
-            new_head = (SCREEN_WIDTH - GRID_SIZE, new_head[1])
-        elif new_head[0] >= SCREEN_WIDTH:
-            new_head = (0, new_head[1])
-        elif new_head[1] < 0:
-            new_head = (new_head[0], SCREEN_HEIGHT - GRID_SIZE)
-        elif new_head[1] >= SCREEN_HEIGHT:
-            new_head = (new_head[0], 0)
+        new_head = (
+            (head[0] + self.direction[0] * GRID_SIZE) % SCREEN_WIDTH,
+            (head[1] + self.direction[1] * GRID_SIZE) % SCREEN_HEIGHT
+        )
         self.positions.insert(0, new_head)
         if len(self.positions) > self.length:
             self.last = self.positions.pop()
 
     def draw(self, surface):
         """Метод, отрисовывающий змейку на игровой поверхности"""
-        for position in self.positions[:-1]:
-            rect = (
-                pygame.Rect((position[0], position[1]), (GRID_SIZE, GRID_SIZE))
-            )
-            pygame.draw.rect(surface, self.body_color, rect)
-            pygame.draw.rect(surface, BORDER_COLOR, rect, 1)
-
         # Отрисовка головы змейки
         head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.body_color, head_rect)
         pygame.draw.rect(surface, BORDER_COLOR, head_rect, 1)
-
         # Затирание последнего сегмента
         if self.last:
             last_rect = pygame.Rect(
@@ -184,9 +168,11 @@ def main():
 
         if snake.get_head_position() == apple.position:
             apple.randomize_position()
-            snake.length += 2
+            snake.length += 1
+        # Яблоко не должно оказаться на змее
+        while apple.position in snake.positions:
+            apple.randomize_position()
 
-        screen.fill(BOARD_BACKGROUND_COLOR)
         snake.move()
         snake.update_direction()
 
