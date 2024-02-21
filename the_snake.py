@@ -66,7 +66,7 @@ class Apple(GameObject):
 
     def __init__(self, position=(randint(0, GRID_WIDTH - 1) * GRID_SIZE,
                                  randint(0, GRID_HEIGHT - 1) * GRID_SIZE),
-                                 body_color=APPLE_COLOR):
+                 body_color=APPLE_COLOR):
         """Метод, инициализирующий начальное состояние яблока"""
         super().__init__(position, body_color)
 
@@ -86,7 +86,7 @@ class Snake(GameObject):
     """Класс, описывающий змейку и её поведение"""
 
     def __init__(self, position=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)),
-                body_color=SNAKE_COLOR):
+                 body_color=SNAKE_COLOR):
         """Метод, инициализирующий начальное состояние змейки"""
         super().__init__(position, body_color)
         self.positions = [position]
