@@ -148,6 +148,7 @@ class Snake(GameObject):
         self.direction = choice([UP, DOWN, LEFT, RIGHT])
         screen.fill(BOARD_BACKGROUND_COLOR)
 
+
 def handle_keys(game_object):
     """Метод обрабатки нажатия клавиш"""
     for event in pygame.event.get():
