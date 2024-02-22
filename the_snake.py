@@ -47,7 +47,7 @@ class GameObject:
     """Базовый класс, от которого наследуются другие игровые объекты"""
 
     def __init__(self, position=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)),
-                 body_color=(255, 255, 255)):
+                 body_color=APPLE_COLOR or SNAKE_COLOR):
         self.position = position
         self.body_color = body_color
 
@@ -74,12 +74,23 @@ class Apple(GameObject):
         """Метод, отрисовывающий яблоко на игровой поверхности"""
         super().draw(self.position, surface)
 
-    def randomize_position(self):
+    def randomize_position(self, taken_positions):
         """Метод, устанавливающий случайное положение яблока"""
-        self.position = (
-            randint(0, GRID_WIDTH - 1) * GRID_SIZE,
-            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-        )
+        if len(taken_positions) != GRID_WIDTH * GRID_HEIGHT:
+            new_position = (
+                randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+                randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+            )
+
+            while new_position in taken_positions:
+                new_position = (
+                    randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+                    randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+                )
+
+            self.position = new_position
+        else:
+            raise ValueError('Больше нет свободных позиций для яблока')
 
 
 class Snake(GameObject):
@@ -137,7 +148,6 @@ class Snake(GameObject):
         self.direction = choice([UP, DOWN, LEFT, RIGHT])
         screen.fill(BOARD_BACKGROUND_COLOR)
 
-
 def handle_keys(game_object):
     """Метод обрабатки нажатия клавиш"""
     for event in pygame.event.get():
@@ -161,24 +171,26 @@ def main():
     apple = Apple((randint(0, GRID_WIDTH - 1) * GRID_SIZE,
                    randint(0, GRID_HEIGHT - 1) * GRID_SIZE))
     snake = Snake(((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)))
+    taken_positions = snake.positions
 
     while True:
         clock.tick(SPEED)
         handle_keys(snake)
 
         if snake.get_head_position() == apple.position:
-            apple.randomize_position()
+            apple.randomize_position(taken_positions)
             snake.length += 1
-        # Яблоко не должно оказаться на змее
-        while apple.position in snake.positions:
-            apple.randomize_position()
 
         snake.move()
         snake.update_direction()
 
         if snake.get_head_position() in snake.positions[1:]:
             snake.reset()
-            apple.randomize_position()
+            apple.randomize_position(taken_positions)
+
+        if len(taken_positions) == GRID_WIDTH * GRID_HEIGHT:
+            snake.reset()
+
         apple.draw(screen)
         snake.draw(screen)
         pygame.display.update()
