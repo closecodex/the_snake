@@ -1,41 +1,41 @@
 # 🐍 Snake Game
 
-## Описание
+## Description
 
-**"Изгиб Питона"** — это классическая аркадная игра, реализованная на Python с использованием библиотеки Pygame.
+**"Snake Game"** is a classic arcade game implemented in Python using the Pygame library.
 
-Игрок управляет змейкой, которая двигается по игровому полю, поедая яблоки и увеличиваясь в длину. Цель — вырастить змейку как можно длиннее, избегая столкновений с её собственным телом.
-
----
-
-## Особенности проекта
-
-1. **Игровое поле:** 640x480 пикселей, разбитое на ячейки 20x20 пикселей.
-2. **Управление:** Клавиши `WASD` или стрелки (`↑`, `↓`, `←`, `→`).
-3. **Проход сквозь стены:** Змейка появляется с противоположной стороны при выходе за границу поля.
-4. **Сброс игры:** При столкновении с собой змейка начинает игру заново.
-5. **Скорость игры:** 20 кадров в секунду.
+The player controls a snake that moves across the game field, eating apples and growing in length. The goal is to grow the snake as long as possible while avoiding collisions with its own body.
 
 ---
 
-## Технологии
+## Project Features
+
+1. **Game field:** 640x480 pixels, divided into 20x20 pixel cells.
+2. **Controls:** WASD keys or arrow keys (↑, ↓, ←, →).
+3. **Wall wrapping:** The snake reappears on the opposite side when moving out of the field boundaries.
+4. **Game reset:** The snake resets to the initial state upon colliding with itself.
+5. **Game speed:** 20 frames per second.
+
+---
+
+## Technologies
 
 - Python 3.9+
 - Pygame 2.0+
 
 ---
 
-## Запуск проекта
+## Project Setup
 
-1. Клонируйте репозиторий:
+1. Clone the repository:
    ```bash
    git clone https://github.com/closecodex/snake-game.git
    cd snake-game
 
-2. Установите зависимости:
+2. Install dependencies:
    ```bash
    pip install pygame
    
-3. Запустите игру:
+3. Run the game:
    ```bash
    python snake_game.py
