@@ -30,7 +30,7 @@ The player controls a snake that moves across the game field, eating apples and 
 1. Clone the repository:
    ```bash
    git clone https://github.com/closecodex/the_snake
-   cd snake-game
+   cd the_snake
 
 2. Install dependencies:
    ```bash
