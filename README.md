@@ -6,6 +6,8 @@
 
 The player controls a snake that moves across the game field, eating apples and growing in length. The goal is to grow the snake as long as possible while avoiding collisions with its own body.
 
+<img width="628" height="507" alt="image" src="https://github.com/user-attachments/assets/f618b79e-6f07-42a1-9f5d-946d377816e6" />
+
 ---
 
 ## Project Features
@@ -38,4 +40,4 @@ The player controls a snake that moves across the game field, eating apples and 
    
 3. Run the game:
    ```bash
-   python snake_game.py
+   python the_snake.py
